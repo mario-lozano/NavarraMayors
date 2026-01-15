@@ -2,13 +2,17 @@
 <html lang="eu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aldundiko Artxiboa - Probintziako alkateak eta zinegotziak</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Nafarroako Errege Artxibo Nagusiak (AGN)</title>
     
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
     
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
@@ -18,7 +22,8 @@
         /* Hizkuntza-aukeratzailea */
         .language-switch {
             position: absolute;
-            top: 25px;
+            top: 50%;
+            transform: translateY(-50%);
             right: 20px;
         }
         .language-switch a {
@@ -31,13 +36,14 @@
             transition: background-color 0.3s;
         }
         .language-switch a:hover {
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255,255,255,0.2);
         }
-        /* Goiburua */
+        /* Goiburua - Color corporativo Archivo de Navarra: #806000 */
         .header {
-            background-color: #2c3e50;
+            background-color: #806000;
             color: white;
-            padding: 25px 0;
+            padding: 20px 0;
+            min-height: 65px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             position: relative;
         }
@@ -48,15 +54,16 @@
         }
         .header h1 {
             margin: 0 0 5px 0;
-            font-size: 2.5em;
+            font-size: 2.2em;
             font-weight: bold;
             border: none;
             padding: 0;
+            padding-right: 100px; /* Espacio para el botón de idioma */
         }
         .header .subtitle {
             margin: 0;
             font-size: 0.9em;
-            opacity: 0.8;
+            opacity: 0.9;
             font-weight: normal;
         }
         /* Blog estiloko edukiontzia */
@@ -71,24 +78,36 @@
             color: #333;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #4CAF50;
+            border-bottom: 3px solid #806000;
             font-size: 1.8em;
         }
         .intro-text {
             color: #555;
-            line-height: 1.6;
-            margin-bottom: 30px;
+            line-height: 1.7;
+            margin-bottom: 25px;
             text-align: justify;
+        }
+        .intro-text a {
+            color: #806000;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .intro-text a:hover {
+            text-decoration: underline;
         }
         #loader {
             text-align: center;
             padding: 20px;
+            color: #806000;
+            font-weight: bold;
         }
         /* Iragazki-inputetarako estiloak */
         tfoot input {
             width: 100%;
-            padding: 3px;
+            padding: 5px;
             box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 3px;
         }
         tfoot {
             display: table-header-group;
@@ -102,17 +121,18 @@
         }
         /* Iragazkiak erakutsi/ezkutatzeko botoia - taulan integratua */
         #toggle-filters {
-            padding: 6px 12px;
-            background-color: #2c3e50;
+            padding: 8px 14px;
+            background-color: #806000;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 13px;
             margin-left: 10px;
+            white-space: nowrap;
         }
         #toggle-filters:hover {
-            background-color: #34495e;
+            background-color: #664d00;
         }
         /* Bilaketa-barra egokitu botoiarekin lerro berean egoteko */
         .dataTables_wrapper .dataTables_filter {
@@ -121,25 +141,139 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
         /* Mugikorretan taularen wrapper-a scroll horizontalarekin */
         .table-wrapper {
             overflow-x: auto;
             margin-top: 20px;
+            -webkit-overflow-scrolling: touch;
         }
-        /* Erantzunkorra */
-        @media (max-width: 768px) {
+        /* DataTables estilo egokitzapenak */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter,
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_paginate {
+            padding: 10px 0;
+        }
+        /* Footer */
+        footer {
+            background-color: #806000;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 0;
+        }
+        footer p {
+            margin: 0;
+        }
+        
+        /* ===================== */
+        /* RESPONSIVE - MÓVILES */
+        /* ===================== */
+        
+        /* Tablets eta pantaila ertainak */
+        @media (max-width: 992px) {
             .container {
-                padding: 20px 10px;
+                padding: 30px 15px;
             }
             .header h1 {
-                font-size: 1.8em;
+                font-size: 1.9em;
+            }
+        }
+        
+        /* Móviles */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 0;
+                min-height: auto;
+            }
+            .header-content {
+                padding: 0 15px;
+            }
+            .header h1 {
+                font-size: 1.4em;
+                padding-right: 80px;
+                line-height: 1.3;
             }
             .header .subtitle {
                 font-size: 0.8em;
             }
+            .language-switch {
+                right: 10px;
+            }
+            .language-switch a {
+                padding: 5px 8px;
+                font-size: 12px;
+            }
+            .container {
+                padding: 20px 12px;
+            }
             .container h2 {
                 font-size: 1.3em;
+                padding-bottom: 10px;
+            }
+            .intro-text {
+                font-size: 0.95em;
+                line-height: 1.6;
+                text-align: left;
+            }
+            /* DataTables responsive */
+            .dataTables_wrapper .dataTables_length,
+            .dataTables_wrapper .dataTables_filter {
+                float: none;
+                text-align: center;
+                width: 100%;
+            }
+            .dataTables_wrapper .dataTables_filter {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .dataTables_wrapper .dataTables_filter input {
+                width: 100%;
+                margin: 5px 0;
+            }
+            #toggle-filters {
+                margin: 10px 0 0 0;
+                width: 100%;
+            }
+            .dataTables_wrapper .dataTables_info,
+            .dataTables_wrapper .dataTables_paginate {
+                float: none;
+                text-align: center;
+            }
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                padding: 8px 12px;
+            }
+            footer {
+                padding: 15px 10px;
+            }
+            footer p {
+                font-size: 0.9em;
+            }
+        }
+        
+        /* Móviles pequeños */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.2em;
+                padding-right: 70px;
+            }
+            .header .subtitle {
+                font-size: 0.75em;
+            }
+            .language-switch a {
+                padding: 4px 6px;
+                font-size: 11px;
+            }
+            .container {
+                padding: 15px 10px;
+            }
+            .container h2 {
+                font-size: 1.15em;
+            }
+            .intro-text {
+                font-size: 0.9em;
             }
         }
     </style>
@@ -148,7 +282,7 @@
     <!-- Goiburua -->
     <header class="header">
         <div class="header-content">
-            <h1>Aldundiko Artxiboa</h1>
+            <h1>Nafarroako Artxibo Nagusia</h1>
             <p class="subtitle">Bistaratze-adibide pilotua</p>
         </div>
         <div class="language-switch">
@@ -165,7 +299,7 @@
         </p>
 
 		<p class="intro-text">
-			Barcelonako Unibertsitateko (UB) <em>The appointment and persistence of autocratic local elites</em> proiektuarekin lankidetzan, dokumentazio horren zati bat digitalizatu dugu, zehazki probintziako “egitatezko osaeraren ziurtagiriak”. Frankismo garaiko prokuradoreak hautatzeko prozesuetan sortutako dokumentuak dira; bertan, berritze unean udalerri bakoitzeko alkateak eta zinegotziak nor ziren jasotzen zen. Artxiboan honako prozesuetako ziurtagiriak gordetzen ditugu: [1946, 1949, 1952, 1955, 1958, 1961, 1964, 1967 eta 1971]. Jatorrizkoak eskuragarri daude <a href="" target="_blank">esteka honetan</a>.
+			Barcelonako Unibertsitateko (UB) <em>The appointment and persistence of autocratic local elites</em> proiektuarekin lankidetzan, dokumentazio horren zati bat digitalizatu dugu, zehazki probintziako "egitatezko osaeraren ziurtagiriak". Frankismo garaiko prokuradoreak hautatzeko prozesuetan sortutako dokumentuak dira; bertan, berritze unean udalerri bakoitzeko alkateak eta zinegotziak nor ziren jasotzen zen. Artxiboan honako prozesuetako ziurtagiriak gordetzen ditugu: [1946, 1949, 1952, 1955, 1958, 1961, 1964, 1967 eta 1971]. Jatorrizkoak eskuragarri daude <a href="" target="_blank">esteka honetan</a>.
 		</p>
 
 		<p class="intro-text">
@@ -209,8 +343,8 @@
         </div><!-- table-wrapper -->
     </div><!-- container -->
     
-    <footer style="background-color: #2c3e50; color: white; text-align: center; padding: 20px; margin-top: 0;">
-        <p style="margin: 0;">Aldundiko Artxiboa | Datu-base historikoa</p>
+    <footer>
+        <p>Nafarroako Artxibo Nagusia | Datu-base historikoa</p>
     </footer>
     
     <!-- jQuery -->
@@ -218,6 +352,7 @@
     
     <!-- DataTables -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     
     <!-- Papa Parse CSV irakurtzeko -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -257,12 +392,12 @@
                             return;
                         }
                         
-                        // Gironako artxiboko erregistroak bakarrik iragazi (ES.17079.AD)
+                        // Nafarroako artxiboko erregistroak bakarrik iragazi (ES.31201.AGN)
                         const datosFiltrados = results.data.filter(row => 
-                            row.archive_code === 'ES.17079.AD'
+                            row.archive_code === 'ES.31201.AGN'
                         );
                         
-                        console.log('Iragazitako erregistroak (ES.17079.AD):', datosFiltrados.length);
+                        console.log('Iragazitako erregistroak (ES.31201.AGN):', datosFiltrados.length);
                         
                         // Taularako datuak prestatu (CSVko goiburu berriak)
                         const datos = datosFiltrados.map(row => [
@@ -287,8 +422,22 @@
                         // DataTables hasieratu
                         const table = $('#tabla-alcaldes').DataTable({
                             data: datos,
+                            responsive: true,
                             language: {
-                                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/eu.json',
+                                // Fallback euskaraz ez badago
+                                search: "Bilatu:",
+                                lengthMenu: "Erakutsi _MENU_ erregistro",
+                                info: "_TOTAL_ erregistroetatik _START_ - _END_ erakusten",
+                                infoEmpty: "Ez dago erregistrorik",
+                                infoFiltered: "(guztira _MAX_ erregistroetatik iragazita)",
+                                paginate: {
+                                    first: "Lehena",
+                                    last: "Azkena",
+                                    next: "Hurrengoa",
+                                    previous: "Aurrekoa"
+                                },
+                                zeroRecords: "Ez da emaitzarik aurkitu"
                             },
                             order: [[0, 'desc']],  // Oharra beherantz ordenatu
                             columns: [
@@ -300,6 +449,16 @@
                                 { title: 'Kargu-hartzea' },
                                 { title: 'Signatura' },
                                 { title: 'COD_INE', visible: false, searchable: true }  // Ezkutuan baina bilagarria
+                            ],
+                            // Responsive: zutabe batzuk ezkutatu pantaila txikietan
+                            columnDefs: [
+                                { responsivePriority: 1, targets: 1 },  // Udalerria - beti ikusgai
+                                { responsivePriority: 2, targets: 3 },  // Izena - beti ikusgai
+                                { responsivePriority: 3, targets: 2 },  // Kargua
+                                { responsivePriority: 4, targets: 0 },  // Oharra
+                                { responsivePriority: 5, targets: 5 },  // Kargu-hartzea
+                                { responsivePriority: 6, targets: 4 },  // Jaiotza
+                                { responsivePriority: 7, targets: 6 },  // Signatura
                             ],
                             initComplete: function () {
                                 // Zutabe ikusgarri bakoitzaren footer-ean iragazkiak gehitu
@@ -316,7 +475,7 @@
                                         const footer = $(column.footer());
                                         
                                         // Bilaketa-input-a sortu
-                                        const input = $('<input type="text" placeholder="Iragazi: ' + title + '" />');
+                                        const input = $('<input type="text" placeholder="' + title + '" />');
                                         footer.html(input);
                                         
                                         // Erabiltzaileak idaztean iragazkia aplikatu
