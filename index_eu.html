@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aldundiko Artxiboa - Probintziako alkateak eta zinegotziak</title>
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        /* Hizkuntza-aukeratzailea */
+        .language-switch {
+            position: absolute;
+            top: 25px;
+            right: 20px;
+        }
+        .language-switch a {
+            color: white;
+            text-decoration: none;
+            padding: 6px 12px;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .language-switch a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        /* Goiburua */
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 25px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .header h1 {
+            margin: 0 0 5px 0;
+            font-size: 2.5em;
+            font-weight: bold;
+            border: none;
+            padding: 0;
+        }
+        .header .subtitle {
+            margin: 0;
+            font-size: 0.9em;
+            opacity: 0.8;
+            font-weight: normal;
+        }
+        /* Blog estiloko edukiontzia */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .container h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #4CAF50;
+            font-size: 1.8em;
+        }
+        .intro-text {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+        #loader {
+            text-align: center;
+            padding: 20px;
+        }
+        /* Iragazki-inputetarako estiloak */
+        tfoot input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+        tfoot {
+            display: table-header-group;
+        }
+        /* Lehenetsitako iragazkiak ezkutatu */
+        #tabla-alcaldes tfoot {
+            display: none;
+        }
+        #tabla-alcaldes tfoot.show-filters {
+            display: table-header-group;
+        }
+        /* Iragazkiak erakutsi/ezkutatzeko botoia - taulan integratua */
+        #toggle-filters {
+            padding: 6px 12px;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-left: 10px;
+        }
+        #toggle-filters:hover {
+            background-color: #34495e;
+        }
+        /* Bilaketa-barra egokitu botoiarekin lerro berean egoteko */
+        .dataTables_wrapper .dataTables_filter {
+            float: right;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        /* Mugikorretan taularen wrapper-a scroll horizontalarekin */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        /* Erantzunkorra */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 10px;
+            }
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .header .subtitle {
+                font-size: 0.8em;
+            }
+            .container h2 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Goiburua -->
+    <header class="header">
+        <div class="header-content">
+            <h1>Aldundiko Artxiboa</h1>
+            <p class="subtitle">Bistaratze-adibide pilotua</p>
+        </div>
+        <div class="language-switch">
+            <a href="index.html">Castellano</a>
+        </div>
+    </header>
+    
+    <!-- Eduki nagusia -->
+    <div class="container">
+        <h2>Probintziako alkateak eta zinegotziak</h2>
+        
+        <p class="intro-text">
+			Nafarroako Errege Artxibo Nagusiak (AGN), Nafarroako artxibo historiko nagusiak, Nafarroako Erresumako gobernu-instituzioen (XI. mendea–1836) dokumentazioa ez ezik, Nafarroako probintziako instituzioek sortutakoa ere (1836–1984) gordetzen du; funtsezkoak dira administrazioaren bilakaera eta tokiko bizitza jarraitzeko. Nafarroako Foru eta Probintzia Diputazioaren funtsaren barruan, besteak beste, hauteskundeei lotutako dokumentazioa gordetzen da; bereziki Hautesle Erroldari eta Hautesle Erroldaren Probintzia Batzordeari dagokiona (1867tik aurrerako serieekin), baita Hautesle Erroldaren Udal Batzordeena ere, Nafarroako herrietako udal-politika eta gizarte-historia aztertzeko balio handikoa. Errolda egiteaz eta kudeatzeaz gain, organo horiek hauteskunde-prozesuen kontrol- eta gainbegiratze-lanak ere bere gain hartu zituzten; Trantsizioan, funtzio horiek 1977ko hauteskunde-araudiak ezarritako Hauteskunde Batzordeetan (Zentrala, Probintzialak eta Zonaldekoak) egituratutako hauteskunde-administrazioari pasa zitzaizkion.		
+        </p>
+
+		<p class="intro-text">
+			Barcelonako Unibertsitateko (UB) <em>The appointment and persistence of autocratic local elites</em> proiektuarekin lankidetzan, dokumentazio horren zati bat digitalizatu dugu, zehazki probintziako “egitatezko osaeraren ziurtagiriak”. Frankismo garaiko prokuradoreak hautatzeko prozesuetan sortutako dokumentuak dira; bertan, berritze unean udalerri bakoitzeko alkateak eta zinegotziak nor ziren jasotzen zen. Artxiboan honako prozesuetako ziurtagiriak gordetzen ditugu: [1946, 1949, 1952, 1955, 1958, 1961, 1964, 1967 eta 1971]. Jatorrizkoak eskuragarri daude <a href="" target="_blank">esteka honetan</a>.
+		</p>
+
+		<p class="intro-text">
+			Guztira 2.753 irudi dira, eta UBko ikertzaileek datu-zientziako tresna aurreratuak erabili dituzte haietako informazioa modu masiboan ateratzeko. Emaitza datu-base argitaragabe bat da: 16.228 erregistro ditu, eta hiru urtetik behin udalerri bakoitzeko osaera politikoa ezagutzeko aukera ematen du. Tokiko elite politikoen inguruan lan egiten duten historialari eta politologoentzat ekarpen esanguratsua da, baina baita probintziako udalentzat eta herritarrentzat ere.
+		</p>
+		<p class="intro-text">
+			Datuak libreki erabil daitezke, egileak eta datu-basea behar bezala aipatuz:  <strong>Lozano Martín, L. M., Casadevall Bover, A., Vall-Prat, P., & Falcó-Gimeno, A. (2025). <em>Spanish Municipal Councils during Francoism (1939–1976)</em> (1.0) [Data set]. Zenodo.</strong> Beste probintzia eta artxiboetako datuak dituen fitxategiaren deskarga —eta kodeei, iturriei, metodologiari eta bestelako xehetasunei buruzko informazioa— hemen dago eskuragarri: <a href="https://doi.org/10.5281/zenodo.17860120" target="_blank">https://doi.org/10.5281/zenodo.17860120</a>
+		</p>
+
+        <div id="loader">Datuak kargatzen...</div>
+        
+        <div class="table-wrapper">
+            <table id="tabla-alcaldes" class="display" style="width:100%; display:none;">
+        <thead>
+            <tr>
+                <th>Oharra</th>
+                <th>Udalerria</th>
+                <th>Kargua</th>
+                <th>Izena</th>
+                <th>Jaiotza</th>
+                <th>Kargu-hartzea</th>
+                <th>Signatura</th>
+                <th>INE_KODEA</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Oharra</th>
+                <th>Udalerria</th>
+                <th>Kargua</th>
+                <th>Izena</th>
+                <th>Jaiotza</th>
+                <th>Kargu-hartzea</th>
+                <th>Signatura</th>
+                <th>INE_KODEA</th>
+            </tr>
+        </tfoot>
+        <tbody>
+        </tbody>
+    </table>
+        </div><!-- table-wrapper -->
+    </div><!-- container -->
+    
+    <footer style="background-color: #2c3e50; color: white; text-align: center; padding: 20px; margin-top: 0;">
+        <p style="margin: 0;">Aldundiko Artxiboa | Datu-base historikoa</p>
+    </footer>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    
+    <!-- DataTables -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    
+    <!-- Papa Parse CSV irakurtzeko -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    
+    <!-- Moment.js eta DataTables-eko data-plugin-a -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.13.6/sorting/datetime-moment.js"></script>
+    
+    <script>
+        // CSVaren URLa
+        const csvUrl = 'https://raw.githubusercontent.com/mario-lozano/GironaMayorsBeta/main/SMC_F_1.0.csv';
+        
+        console.log('CSV kargatzen hemendik:', csvUrl);
+        
+        // CSV kargatu
+        fetch(csvUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Fitxategia ez da aurkitu. Egiaztatu igoa dagoela eta biltegia publikoa dela.');
+                }
+                return response.text();
+            })
+            .then(csvText => {
+                console.log('CSV deskargatuta, tamaina:', csvText.length, 'karaktere');
+                
+                // CSV parseatu
+                Papa.parse(csvText, {
+                    header: true,
+                    delimiter: ";",
+                    skipEmptyLines: true,
+                    complete: function(results) {
+                        console.log('CSV parseatuta. Erregistroak:', results.data.length);
+                        
+                        if (results.data.length === 0) {
+                            document.getElementById('loader').innerHTML = 
+                                'Errorea: fitxategia hutsik dago';
+                            return;
+                        }
+                        
+                        // Gironako artxiboko erregistroak bakarrik iragazi (ES.17079.AD)
+                        const datosFiltrados = results.data.filter(row => 
+                            row.archive_code === 'ES.17079.AD'
+                        );
+                        
+                        console.log('Iragazitako erregistroak (ES.17079.AD):', datosFiltrados.length);
+                        
+                        // Taularako datuak prestatu (CSVko goiburu berriak)
+                        const datos = datosFiltrados.map(row => [
+                            row.document_creation_year || '',                  // 0 - Oharra
+                            row.municipality || '',                            // 1 - Udalerria
+                            row.position || '',                                // 2 - Kargua
+                            row.name_standardized || row.name_original || '',  // 3 - Izena
+                            row.birth_date || '',                              // 4 - Jaiotza
+                            row.assumption_date || '',                         // 5 - Kargu-hartzea
+                            row.reference_code || '',                          // 6 - Signatura
+                            row.ine_code || ''                                 // 7 - INE_KODEA (ezkutuan baina bilagarria)
+                        ]);
+                        
+                        // Loader-a ezkutatu eta taula erakutsi
+                        document.getElementById('loader').style.display = 'none';
+                        document.getElementById('tabla-alcaldes').style.display = 'table';
+                        
+                        // Dataren formatuak konfiguratu ordenazio zuzenerako
+                        $.fn.dataTable.moment('DD/MM/YYYY');
+                        $.fn.dataTable.moment('YYYY');
+                        
+                        // DataTables hasieratu
+                        const table = $('#tabla-alcaldes').DataTable({
+                            data: datos,
+                            language: {
+                                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                            },
+                            order: [[0, 'desc']],  // Oharra beherantz ordenatu
+                            columns: [
+                                { title: 'Oharra' },
+                                { title: 'Udalerria' },
+                                { title: 'Kargua' },
+                                { title: 'Izena' },
+                                { title: 'Jaiotza' },
+                                { title: 'Kargu-hartzea' },
+                                { title: 'Signatura' },
+                                { title: 'COD_INE', visible: false, searchable: true }  // Ezkutuan baina bilagarria
+                            ],
+                            initComplete: function () {
+                                // Zutabe ikusgarri bakoitzaren footer-ean iragazkiak gehitu
+                                const api = this.api();
+                                
+                                api.columns().every(function () {
+                                    const column = this;
+                                    const columnIndex = column.index();
+                                    
+                                    // Zutabea ikusgarria bada bakarrik gehitu iragazkia
+                                    if (column.visible()) {
+                                        const header = $(column.header());
+                                        const title = header.text();
+                                        const footer = $(column.footer());
+                                        
+                                        // Bilaketa-input-a sortu
+                                        const input = $('<input type="text" placeholder="Iragazi: ' + title + '" />');
+                                        footer.html(input);
+                                        
+                                        // Erabiltzaileak idaztean iragazkia aplikatu
+                                        input.on('keyup change', function () {
+                                            if (column.search() !== this.value) {
+                                                column.search(this.value).draw();
+                                            }
+                                        });
+                                    }
+                                });
+                                
+                                // Iragazkien botoia sortu eta bilaketa-barran txertatu
+                                const toggleBtn = document.createElement('button');
+                                toggleBtn.id = 'toggle-filters';
+                                toggleBtn.innerHTML = '🔍 Iragazki gehiago';
+                                
+                                // Botoia bilaketa-barran txertatu
+                                const searchDiv = document.querySelector('.dataTables_filter');
+                                if (searchDiv) {
+                                    searchDiv.appendChild(toggleBtn);
+                                }
+                                
+                                // Iragazkiak erakutsi/ezkutatzeko funtzionalitatea
+                                const tableFooter = document.querySelector('#tabla-alcaldes tfoot');
+                                
+                                toggleBtn.addEventListener('click', function() {
+                                    if (tableFooter.classList.contains('show-filters')) {
+                                        tableFooter.classList.remove('show-filters');
+                                        this.innerHTML = '🔍 Iragazki gehiago';
+                                    } else {
+                                        tableFooter.classList.add('show-filters');
+                                        this.innerHTML = '🔍 Iragazki gutxiago';
+                                    }
+                                });
+                            }
+                        });
+                        
+                        console.log('✓ Taula sortuta zutabeko iragazkiekin');
+                    },
+                    error: function(error) {
+                        console.error('Errorea parseatzean:', error);
+                        document.getElementById('loader').innerHTML = 
+                            'Errorea prozesatzean: ' + error.message;
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Errorea:', error);
+                document.getElementById('loader').innerHTML = 
+                    'Errorea: ' + error.message + '<br><br>' +
+                    '<strong>Egiaztatu:</strong><br>' +
+                    '1. Biltegi publikoa dela<br>' +
+                    '2. Fitxategia ondo igo dela<br>' +
+                    '3. Fitxategiaren izena zuzena dela<br><br>' +
+                    '<a href="' + csvUrl + '" target="_blank">URLa probatu</a>';
+            });
+    </script>
+</body>
+</html>
