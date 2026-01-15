@@ -282,7 +282,7 @@
     <!-- Goiburua -->
     <header class="header">
         <div class="header-content">
-            <h1>Nafarroako Errege Artxibo Nagusiak</h1>
+            <h1>Nafarroako Artxibo Nagusia</h1>
             <p class="subtitle">Bistaratze-adibide pilotua</p>
         </div>
         <div class="language-switch">
@@ -392,12 +392,12 @@
                             return;
                         }
                         
-                        // Nafarroako artxiboko erregistroak bakarrik iragazi (ES.31201.AGN)
+                        // Gironako artxiboko erregistroak bakarrik iragazi (ES.17079.AD)
                         const datosFiltrados = results.data.filter(row => 
-                            row.archive_code === 'ES.31201.AGN'
+                            row.archive_code === 'ES.17079.AD'
                         );
                         
-                        console.log('Iragazitako erregistroak (ES.31201.AGN):', datosFiltrados.length);
+                        console.log('Iragazitako erregistroak (ES.17079.AD):', datosFiltrados.length);
                         
                         // Taularako datuak prestatu (CSVko goiburu berriak)
                         const datos = datosFiltrados.map(row => [
