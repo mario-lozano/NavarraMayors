@@ -392,12 +392,12 @@
                             return;
                         }
                         
-                        // Filtrar solo registros del Archivo de Navarra (ES.31201.AGN)
+                        // Filtrar solo registros del archivo de Girona (ES.17079.AD)
                         const datosFiltrados = results.data.filter(row => 
-                            row.archive_code === 'ES.31201.AGN'
+                            row.archive_code === 'ES.17079.AD'
                         );
                         
-                        console.log('Registros filtrados (ES.31201.AGN):', datosFiltrados.length);
+                        console.log('Registros filtrados (ES.17079.AD):', datosFiltrados.length);
                         
                         // Preparar datos para la tabla (nuevas cabeceras del CSV)
                         const datos = datosFiltrados.map(row => [
