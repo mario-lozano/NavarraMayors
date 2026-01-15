@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archivo de la Diputación - Alcaldes y concejales de la provincia</title>
+    
+    <!-- CSS de DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        /* Selector de idioma */
+        .language-switch {
+            position: absolute;
+            top: 25px;
+            right: 20px;
+        }
+        .language-switch a {
+            color: white;
+            text-decoration: none;
+            padding: 6px 12px;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .language-switch a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        /* Cabecera */
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 25px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .header h1 {
+            margin: 0 0 5px 0;
+            font-size: 2.5em;
+            font-weight: bold;
+            border: none;
+            padding: 0;
+        }
+        .header .subtitle {
+            margin: 0;
+            font-size: 0.9em;
+            opacity: 0.8;
+            font-weight: normal;
+        }
+        /* Contenedor tipo blog */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .container h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #4CAF50;
+            font-size: 1.8em;
+        }
+        .intro-text {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+        #loader {
+            text-align: center;
+            padding: 20px;
+        }
+        /* Estilos para los inputs de filtro */
+        tfoot input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+        tfoot {
+            display: table-header-group;
+        }
+        /* Ocultar filtros por defecto */
+        #tabla-alcaldes tfoot {
+            display: none;
+        }
+        #tabla-alcaldes tfoot.show-filters {
+            display: table-header-group;
+        }
+        /* Botón para mostrar/ocultar filtros - integrado en la tabla */
+        #toggle-filters {
+            padding: 6px 12px;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-left: 10px;
+        }
+        #toggle-filters:hover {
+            background-color: #34495e;
+        }
+        /* Ajustar la barra de búsqueda para que esté en línea con el botón */
+        .dataTables_wrapper .dataTables_filter {
+            float: right;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        /* Wrapper para la tabla con scroll horizontal en móviles */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 10px;
+            }
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .header .subtitle {
+                font-size: 0.8em;
+            }
+            .container h2 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabecera -->
+    <header class="header">
+        <div class="header-content">
+            <h1>Archivo de la Diputación</h1>
+            <p class="subtitle">Ejemplo piloto de visualización</p>
+        </div>
+        <div class="language-switch">
+            <a href="index_ca.html">Català</a>
+        </div>
+    </header>
+    
+    <!-- Contenido principal -->
+    <div class="container">
+        <h2>Alcaldes y concejales de la provincia</h2>
+        
+        <p class="intro-text">
+			El Archivo Real y General de Navarra (AGN), principal archivo histórico de Navarra, custodia tanto la documentación de las instituciones de gobierno del Reino de Navarra (siglo XI–1836) como la generada por las instituciones de la provincia de Navarra (1836–1984), clave para seguir la evolución de la administración y la vida local. Dentro del fondo de la Diputación Foral y Provincial de Navarra se conserva, entre otra, la documentación vinculada a elecciones, en particular la del Censo Electoral y la Junta Provincial de Censo Electoral (con series desde 1867) y las Juntas Municipales de Censo, de gran valor para estudiar la política municipal y la historia social de los pueblos navarros. Además de elaborar y gestionar el censo, estos órganos asumieron tareas de control y supervisión de los procesos electorales, funciones que en la Transición pasaron a la Administración electoral articulada en Juntas Electorales (Central, Provinciales y de Zona) establecida por la normativa electoral de 1977.		</p>
+
+		<p class="intro-text">
+			En colaboración con el proyecto <em>The appointment and persistence of autocratic local elites</em> de la Universidad de Barcelona (UB), hemos digitalizado parte de esta documentación, concretamente los "Certificados de composición de hecho" de la provincia. Se trata de documentos generados durante los procesos de elección de los procuradores franquistas, en los que se reflejaba quiénes eran los alcaldes y concejales de cada municipio en el momento de la renovación. En el archivo conservamos certificados de procesos de [1946, 1949, 1952, 1955, 1958, 1961, 1964, 1967 y 1971]. Los originales están disponibles <a href="" target="_blank">en este enlace</a>.
+		</p>
+
+		<p class="intro-text">
+			En total son 2.753 imágenes sobre las que los investigadores de la UB han empleado herramientas punteras de ciencia de datos para extraer masivamente su información. El resultado es una base de datos inédita, con 16.228 registros que permite conocer la composición política de cada municipio cada tres años. Se trata de una contribución significativa para historiadores y politólogos que trabajan sobre élites políticas locales, pero también para los ayuntamientos de la provincia y la ciudadanía en general.
+		</p>
+		<p class="intro-text">
+			
+			Los datos pueden utilizarse libremente citando adecuadamente a los autores y la base de datos:  <strong>Lozano Martín, L. M., Casadevall Bover, A., Vall-Prat, P., & Falcó-Gimeno, A. (2025). <em>Spanish Municipal Councils during Francoism (1939–1976)</em> (1.0) [Data set]. Zenodo.</strong> La descarga del fichero con datos de otras provincias y archivos —e información sobre códigos, fuentes, metodología y otros detalles— está disponible en <a href="https://doi.org/10.5281/zenodo.17860120" target="_blank">https://doi.org/10.5281/zenodo.17860120</a>
+		</p>
+
+
+        <div id="loader">Cargando datos...</div>
+        
+        <div class="table-wrapper">
+            <table id="tabla-alcaldes" class="display" style="width:100%; display:none;">
+        <thead>
+            <tr>
+                <th>Observación</th>
+                <th>Municipio</th>
+                <th>Cargo</th>
+                <th>Nombre</th>
+                <th>Nacimiento</th>
+                <th>Posesión</th>
+                <th>Signatura</th>
+                <th>COD_INE</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Observación</th>
+                <th>Municipio</th>
+                <th>Cargo</th>
+                <th>Nombre</th>
+                <th>Nacimiento</th>
+                <th>Posesión</th>
+                <th>Signatura</th>
+                <th>COD_INE</th>
+            </tr>
+        </tfoot>
+        <tbody>
+        </tbody>
+    </table>
+        </div><!-- table-wrapper -->
+    </div><!-- container -->
+    
+    <footer style="background-color: #2c3e50; color: white; text-align: center; padding: 20px; margin-top: 0;">
+        <p style="margin: 0;">Archivo de la Diputación | Base de datos histórica</p>
+    </footer>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    
+    <!-- DataTables -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    
+    <!-- Papa Parse para leer CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    
+    <!-- Moment.js y plugin de fechas para DataTables -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.13.6/sorting/datetime-moment.js"></script>
+    
+    <script>
+        // URL del CSV
+        const csvUrl = 'https://raw.githubusercontent.com/mario-lozano/GironaMayorsBeta/main/SMC_F_1.0.csv';
+        
+        console.log('Cargando CSV desde:', csvUrl);
+        
+        // Cargar el CSV
+        fetch(csvUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Archivo no encontrado. Verifica que esté subido y que el repositorio sea público.');
+                }
+                return response.text();
+            })
+            .then(csvText => {
+                console.log('CSV descargado, tamaño:', csvText.length, 'caracteres');
+                
+                // Parsear el CSV
+                Papa.parse(csvText, {
+                    header: true,
+                    delimiter: ";",
+                    skipEmptyLines: true,
+                    complete: function(results) {
+                        console.log('CSV parseado. Registros:', results.data.length);
+                        
+                        if (results.data.length === 0) {
+                            document.getElementById('loader').innerHTML = 
+                                'Error: El archivo está vacío';
+                            return;
+                        }
+                        
+                        // Filtrar solo registros del archivo de Girona (ES.17079.AD)
+                        const datosFiltrados = results.data.filter(row => 
+                            row.archive_code === 'ES.17079.AD'
+                        );
+                        
+                        console.log('Registros filtrados (ES.17079.AD):', datosFiltrados.length);
+                        
+                        // Preparar datos para la tabla (nuevas cabeceras del CSV)
+                        const datos = datosFiltrados.map(row => [
+                            row.document_creation_year || '',                  // 0 - Observación
+                            row.municipality || '',                            // 1 - Municipio
+                            row.position || '',                                // 2 - Cargo
+                            row.name_standardized || row.name_original || '',  // 3 - Nombre
+                            row.birth_date || '',                              // 4 - Nacimiento
+                            row.assumption_date || '',                          // 5 - Posesión
+                            row.reference_code || '',                          // 6 - Signatura
+                            row.ine_code || ''                                 // 7 - COD_INE (oculto pero buscable)
+                        ]);
+                        
+                        // Ocultar loader y mostrar tabla
+                        document.getElementById('loader').style.display = 'none';
+                        document.getElementById('tabla-alcaldes').style.display = 'table';
+                        
+                        // Configurar formatos de fecha para ordenación correcta
+                        $.fn.dataTable.moment('DD/MM/YYYY');
+                        $.fn.dataTable.moment('YYYY');
+                        
+                        // Inicializar DataTables
+                        const table = $('#tabla-alcaldes').DataTable({
+                            data: datos,
+                            language: {
+                                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                            },
+                            order: [[0, 'desc']],  // Ordenar por observación descendente
+                            columns: [
+                                { title: 'Observación' },
+                                { title: 'Municipio' },
+                                { title: 'Cargo' },
+                                { title: 'Nombre' },
+                                { title: 'Nacimiento' },
+                                { title: 'Posesión' },
+                                { title: 'Signatura' },
+                                { title: 'COD_INE', visible: false, searchable: true }  // Oculto pero buscable
+                            ],
+                            initComplete: function () {
+                                // Añadir filtros en el footer de cada columna visible
+                                const api = this.api();
+                                
+                                api.columns().every(function () {
+                                    const column = this;
+                                    const columnIndex = column.index();
+                                    
+                                    // Solo añadir filtro si la columna es visible
+                                    if (column.visible()) {
+                                        const header = $(column.header());
+                                        const title = header.text();
+                                        const footer = $(column.footer());
+                                        
+                                        // Crear input de búsqueda
+                                        const input = $('<input type="text" placeholder="Filtrar ' + title + '" />');
+                                        footer.html(input);
+                                        
+                                        // Aplicar filtro cuando el usuario escribe
+                                        input.on('keyup change', function () {
+                                            if (column.search() !== this.value) {
+                                                column.search(this.value).draw();
+                                            }
+                                        });
+                                    }
+                                });
+                                
+                                // Crear botón de filtros e insertarlo en la barra de búsqueda
+                                const toggleBtn = document.createElement('button');
+                                toggleBtn.id = 'toggle-filters';
+                                toggleBtn.innerHTML = '🔍 Más filtros';
+                                
+                                // Insertar el botón en la barra de búsqueda
+                                const searchDiv = document.querySelector('.dataTables_filter');
+                                if (searchDiv) {
+                                    searchDiv.appendChild(toggleBtn);
+                                }
+                                
+                                // Funcionalidad para mostrar/ocultar filtros
+                                const tableFooter = document.querySelector('#tabla-alcaldes tfoot');
+                                
+                                toggleBtn.addEventListener('click', function() {
+                                    if (tableFooter.classList.contains('show-filters')) {
+                                        tableFooter.classList.remove('show-filters');
+                                        this.innerHTML = '🔍 Más filtros';
+                                    } else {
+                                        tableFooter.classList.add('show-filters');
+                                        this.innerHTML = '🔍 Menos filtros';
+                                    }
+                                });
+                            }
+                        });
+                        
+                        console.log('✓ Tabla creada con filtros por columna');
+                    },
+                    error: function(error) {
+                        console.error('Error al parsear:', error);
+                        document.getElementById('loader').innerHTML = 
+                            'Error al procesar: ' + error.message;
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('loader').innerHTML = 
+                    'Error: ' + error.message + '<br><br>' +
+                    '<strong>Verifica:</strong><br>' +
+                    '1. Repositorio público<br>' +
+                    '2. Archivo subido correctamente<br>' +
+                    '3. Nombre correcto del archivo<br><br>' +
+                    '<a href="' + csvUrl + '" target="_blank">Probar URL</a>';
+            });
+    </script>
+</body>
+</html>
